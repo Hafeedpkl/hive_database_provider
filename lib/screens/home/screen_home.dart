@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:student_details/screens/home/widgets/add_student_widget.dart';
+import 'package:student_details/screens/AddStudent/add_student_widget.dart';
 import 'package:student_details/screens/home/widgets/list_student_widget.dart';
 
 import '../../db/functions/db_functions.dart';
-import 'widgets/search_student.dart';
+import '../search/search_student.dart';
 
 class ScreenHome extends StatefulWidget {
   const ScreenHome({super.key});
@@ -22,21 +22,12 @@ class _ScreenHomeState extends State<ScreenHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.pinkAccent.shade100,
       appBar: AppBar(
+        centerTitle: true,
         title: const Text('Home Screen'),
-        actions: [
-            IconButton(
-              onPressed: () {
-                showSearch(
-                  context: context,
-                  delegate: Search(),
-                );
-              },
-              icon: const Icon(Icons.search),
-            ),
-          ],
       ),
-      body: const SafeArea(
+      body: SafeArea(
         child: ListStudentWidget(),
       ),
       floatingActionButton: FloatingActionButton(

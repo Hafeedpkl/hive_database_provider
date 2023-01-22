@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:student_details/screens/home/screen_home.dart';
 
-import '../../../db/functions/db_functions.dart';
-import '../../../db/model/data_model.dart';
+import '../../db/functions/db_functions.dart';
+import '../../db/model/data_model.dart';
 
 class AddStudentWidget extends StatefulWidget {
   const AddStudentWidget({Key? key}) : super(key: key);

@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:student_details/db/functions/db_functions.dart';
-import 'package:student_details/screens/home/widgets/student_details.dart';
+import 'package:student_details/screens/StudentDetails/student_details.dart';
 
-import '../../../db/model/data_model.dart';
+import '../../db/model/data_model.dart';
 
 class Search extends SearchDelegate {
   @override

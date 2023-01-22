@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 
-import 'edit_student.dart';
+import '../EditStudent/edit_student.dart';
 
 class StudentDetails extends StatelessWidget {
   final String name;

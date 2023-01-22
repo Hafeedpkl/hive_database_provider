@@ -31,3 +31,33 @@ Future<void> editList(int id, StudentModel value) async {
   studentDatabase.putAt(id, value);
   getAllStudent();
 }
+
+class FunctionDB with ChangeNotifier {
+  Future<void> addStudent(StudentModel value) async {
+    final studentDB = await Hive.openBox<StudentModel>('student_db');
+    final ids = await studentDB.add(value);
+    value.id = ids;
+    studentListNotifier.value.add(value);
+    studentListNotifier.notifyListeners();
+    getAllStudent();
+  }
+
+  Future<void> getAllStudent() async {
+    final studentDB = await Hive.openBox<StudentModel>('student_db');
+    studentListNotifier.value.clear();
+    studentListNotifier.value.addAll(studentDB.values);
+    studentListNotifier.notifyListeners();
+  }
+
+  Future<void> deleteStudent(index) async {
+    final studentDB = await Hive.openBox<StudentModel>('student_db');
+    await studentDB.deleteAt(index);
+    getAllStudent();
+  }
+
+  Future<void> editList(int id, StudentModel value) async {
+    final studentDatabase = await Hive.openBox<StudentModel>('student_db');
+    studentDatabase.putAt(id, value);
+    getAllStudent();
+  }
+}

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:student_details/db/functions/db_functions.dart';
 
-import '../../../db/model/data_model.dart';
+import '../../db/model/data_model.dart';
 
 
 class EditStudent extends StatefulWidget {

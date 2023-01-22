@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:student_details/controller/provider/student_provider.dart';
 import 'package:student_details/screens/home/screen_home.dart';
 
 import 'db/model/data_model.dart';
@@ -10,7 +12,10 @@ Future<void> main() async {
   if (!Hive.isAdapterRegistered(StudentModelAdapter().typeId)) {
     Hive.registerAdapter(StudentModelAdapter());
   }
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider<StudentProvider>(
+    create: (context) => StudentProvider(),
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -21,7 +26,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Login Page',
-      theme: ThemeData(primarySwatch: Colors.red),
+      theme: ThemeData(primarySwatch: Colors.pink),
       home: const ScreenHome(),
     );
   }
