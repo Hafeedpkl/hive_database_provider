@@ -8,6 +8,7 @@ Future<void> addStudent(StudentModel value) async {
   final studentDB = await Hive.openBox<StudentModel>('student_db');
   final ids = await studentDB.add(value);
   value.id = ids;
+
   studentListNotifier.value.add(value);
   studentListNotifier.notifyListeners();
   getAllStudent();
@@ -16,6 +17,7 @@ Future<void> addStudent(StudentModel value) async {
 Future<void> getAllStudent() async {
   final studentDB = await Hive.openBox<StudentModel>('student_db');
   studentListNotifier.value.clear();
+  FunctionDB.studentList.addAll(studentDB.values);
   studentListNotifier.value.addAll(studentDB.values);
   studentListNotifier.notifyListeners();
 }
@@ -33,19 +35,21 @@ Future<void> editList(int id, StudentModel value) async {
 }
 
 class FunctionDB with ChangeNotifier {
+  static List<StudentModel> studentList = [];
   Future<void> addStudent(StudentModel value) async {
     final studentDB = await Hive.openBox<StudentModel>('student_db');
     final ids = await studentDB.add(value);
     value.id = ids;
-    studentListNotifier.value.add(value);
-    studentListNotifier.notifyListeners();
+    studentList.add(value);
+    notifyListeners();
     getAllStudent();
   }
 
   Future<void> getAllStudent() async {
     final studentDB = await Hive.openBox<StudentModel>('student_db');
     studentListNotifier.value.clear();
-    studentListNotifier.value.addAll(studentDB.values);
+
+    studentList.addAll(studentDB.values);
     studentListNotifier.notifyListeners();
   }
 

@@ -13,10 +13,8 @@ class ListStudentWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final data = context.watch<StudentProvider>().name;
-    return ValueListenableBuilder(
-      valueListenable: studentListNotifier,
-      builder:
-          (BuildContext ctx, List<StudentModel> studentList, Widget? child) {
+    return Consumer<StudentProvider>(
+      builder: (BuildContext ctx, value, Widget? child) {
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -26,13 +24,17 @@ class ListStudentWidget extends StatelessWidget {
                 prefixIcon: Icon(Icons.search),
                 suffixIcon: Icon(Icons.close),
                 backgroundColor: Colors.white,
+                onChanged: (value) {
+                  Provider.of<StudentProvider>(context, listen: false)
+                      .runFilter(value);
+                },
               ),
               kHieght10,
               Text(data),
               Expanded(
                 child: ListView.separated(
                   itemBuilder: (ctx, index) {
-                    final data = studentList[index];
+                    final data = value.foundUsers[index];
                     return Card(
                       elevation: 4,
                       color: Colors.purple.shade100,
@@ -75,7 +77,7 @@ class ListStudentWidget extends StatelessWidget {
                   separatorBuilder: (ctx, index) {
                     return const Divider();
                   },
-                  itemCount: studentList.length,
+                  itemCount: value.foundUsers.length,
                 ),
               ),
             ],
