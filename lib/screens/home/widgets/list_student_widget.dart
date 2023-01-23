@@ -4,35 +4,32 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:student_details/controller/core/constants.dart';
 import 'package:student_details/controller/provider/student_provider.dart';
-import 'package:student_details/db/functions/db_functions.dart';
-import 'package:student_details/db/model/data_model.dart';
 import 'package:student_details/screens/StudentDetails/student_details.dart';
 
 class ListStudentWidget extends StatelessWidget {
-  ListStudentWidget({super.key});
+  const ListStudentWidget({super.key});
   @override
   Widget build(BuildContext context) {
-    final data = context.watch<StudentProvider>().name;
-    return Consumer<StudentProvider>(
-      builder: (BuildContext ctx, value, Widget? child) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              kHieght10,
-              CupertinoSearchTextField(
-                prefixIcon: Icon(Icons.search),
-                suffixIcon: Icon(Icons.close),
-                backgroundColor: Colors.white,
-                onChanged: (value) {
-                  Provider.of<StudentProvider>(context, listen: false)
-                      .runFilter(value);
-                },
-              ),
-              kHieght10,
-              Text(data),
-              Expanded(
-                child: ListView.separated(
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          kHieght10,
+          CupertinoSearchTextField(
+            prefixIcon: const Icon(Icons.search),
+            suffixIcon: const Icon(Icons.close),
+            backgroundColor: Colors.white,
+            onChanged: (value) {
+              Provider.of<StudentProvider>(context, listen: false)
+                  .runFilter(value);
+            },
+          ),
+          kHieght10,
+          Expanded(
+            child: Consumer<StudentProvider>(
+                builder: (BuildContext ctx, value, Widget? child) {
+              if (value.foundUsers.isNotEmpty) {
+                return ListView.separated(
                   itemBuilder: (ctx, index) {
                     final data = value.foundUsers[index];
                     return Card(
@@ -49,7 +46,10 @@ class ListStudentWidget extends StatelessWidget {
                         subtitle: Text('${data.age} years old'),
                         trailing: IconButton(
                           onPressed: () {
-                            deleteStudent(index);
+                            StudentProvider.deleteItem(
+                              context,
+                              data.id.toString(),
+                            );
                           },
                           icon: const Icon(
                             Icons.delete,
@@ -78,12 +78,19 @@ class ListStudentWidget extends StatelessWidget {
                     return const Divider();
                   },
                   itemCount: value.foundUsers.length,
-                ),
-              ),
-            ],
+                );
+              } else {
+                return const Center(
+                  child: Text(
+                    'Add some students',
+                    style: TextStyle(fontSize: 15),
+                  ),
+                );
+              }
+            }),
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 }

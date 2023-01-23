@@ -10,16 +10,17 @@ class StudentDetails extends StatelessWidget {
   final String school;
   final String photo;
   final int index;
+  final String? id;
 
-  StudentDetails({
-    super.key,
-    required this.name,
-    required this.age,
-    required this.mobile,
-    required this.school,
-    required this.photo,
-    required this.index,
-  });
+  const StudentDetails(
+      {super.key,
+      required this.name,
+      required this.age,
+      required this.mobile,
+      required this.school,
+      required this.photo,
+      required this.index,
+      this.id});
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +101,7 @@ class StudentDetails extends StatelessWidget {
                               school: school,
                               index: index,
                               image: photo,
-                              photo: '',
+                              id: id.toString(),
                             ),
                           ),
                         );

@@ -1,36 +1,32 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:student_details/db/functions/db_functions.dart';
+import 'package:student_details/screens/home/screen_home.dart';
 
 import '../../db/model/data_model.dart';
 
-
-class EditStudent extends StatefulWidget {
+// ignore: must_be_immutable
+class EditStudent extends StatelessWidget {
   final String name;
   final String age;
   final String mobile;
   final String school;
-  late final String image;
+  final String image;
   final int index;
+  final String id;
 
-  EditStudent({
-    super.key,
-    required this.name,
-    required this.age,
-    required this.mobile,
-    required this.school,
-    required this.index,
-    required this.image,
-    required String photo,
-  });
+  EditStudent(
+      {super.key,
+      required this.name,
+      required this.age,
+      required this.mobile,
+      required this.school,
+      required this.index,
+      required this.image,
+      required this.id});
 
-  @override
-  State<EditStudent> createState() => _EditStudentState();
-}
-
-class _EditStudentState extends State<EditStudent> {
   TextEditingController _nameController = TextEditingController();
 
   TextEditingController _ageController = TextEditingController();
@@ -42,16 +38,11 @@ class _EditStudentState extends State<EditStudent> {
   final _formKey = GlobalKey<FormState>();
 
   @override
-  void initState() {
-    super.initState();
-    _nameController = TextEditingController(text: widget.name);
-    _ageController = TextEditingController(text: widget.age);
-    _mobileController = TextEditingController(text: widget.mobile);
-    _schoolController = TextEditingController(text: widget.school);
-  }
-
-  @override
   Widget build(BuildContext context) {
+    _nameController = TextEditingController(text: name);
+    _ageController = TextEditingController(text: age);
+    _mobileController = TextEditingController(text: mobile);
+    _schoolController = TextEditingController(text: school);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Student Details'),
@@ -74,7 +65,7 @@ class _EditStudentState extends State<EditStudent> {
                   CircleAvatar(
                     radius: 80,
                     backgroundImage: FileImage(
-                      File(widget.image),
+                      File(image),
                     ),
                   ),
                   const SizedBox(
@@ -166,7 +157,6 @@ class _EditStudentState extends State<EditStudent> {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             onEditSaveButton(context);
-                            Navigator.of(context).pop();
                           }
                         },
                         icon: const Icon(Icons.check),
@@ -189,23 +179,15 @@ class _EditStudentState extends State<EditStudent> {
       age: _ageController.text,
       mobile: _mobileController.text,
       school: _schoolController.text,
-      photo: widget.image,
+      photo: image.toString(),
+      id: id,
     );
-    editList(widget.index, studentmodel);
-    Navigator.of(context).pop();
-  }
+    Provider.of<FunctionDB>(ctx, listen: false).editList(index, studentmodel);
 
-  Future<void> getPhoto() async {
-    final photo = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (photo == null) {
-      return;
-    } else {
-      final photoTemp = File(photo.path);
-      setState(
-        () {
-          widget.image = photoTemp.path;
-        },
-      );
-    }
+    Navigator.push(
+        ctx,
+        MaterialPageRoute(
+          builder: (context) => const ScreenHome(),
+        ));
   }
 }
