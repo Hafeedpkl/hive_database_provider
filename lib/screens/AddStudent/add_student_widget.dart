@@ -50,7 +50,7 @@ class AddStudentWidget extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    studentProvider.sphoto?.path == null
+                    value.sphoto == null
                         ? const CircleAvatar(
                             radius: 80,
                             backgroundImage: AssetImage('assets/images/d3.png'),
